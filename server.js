@@ -14,6 +14,9 @@ app.use(cors());
 
 
 app.use('/api/v1/', Router);
+app.get('/health', async (req, res) => {
+  res.send(`<h3>Welcome to doc Editor</h3>`);
+});
 
 
 
