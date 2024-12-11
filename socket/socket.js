@@ -47,7 +47,8 @@ export const socket = (io) => {
 const handleJoinRoom = (socket, io, data, userId, callback) => {
   try {
     const { roomId, username } = data;
-    socket.join(roomId);
+    console.log('roomId roomId',roomId)
+    socket.join(roomId.toString());
     addUserToRoom(roomId, username, userId);
     emitRoomUpdate(io, roomId, "someoneJoined", username);
   } catch (error) {
@@ -103,10 +104,9 @@ const handleGetDoc = async (io, data) => {
 const handleSaveDoc = async (io,socket,data, callback) => {
   try {
     console.log('handleSaveDoc handleSaveDoc')
-    if (!data.data) return;
     await DocumentModel.findByIdAndUpdate(data.docId?.toString(), { content: data.data });
-    console.log("'save-doc-receive 'save-doc-receive 'save-doc-receive",data.docId)
-    socket.to(data.docId.toString()).emit('save-doc-receive',{data:data.data})
+    console.log("'save-doc-receive 'save-doc-receive 'save-doc-receive",data)
+    io.to(data.docId.toString()).emit('save-doc-receive',{data:data.data})
   } catch (error) {
     handleError(error, callback);
   }
